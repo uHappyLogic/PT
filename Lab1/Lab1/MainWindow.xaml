@@ -5,16 +5,21 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Lab1"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" Height="434" Width="532">
     <Grid>
-        <Menu VerticalAlignment="Top" Height="19">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="287*"/>
+            <ColumnDefinition Width="230*"/>
+        </Grid.ColumnDefinitions>
+        <Menu VerticalAlignment="Top" Height="19" Grid.ColumnSpan="2">
             <MenuItem Header="_File">
                 <MenuItem Header="_Open" Click="MenuItem_Click" />
                 <Separator />
-                <MenuItem Header="_Exit" />
+                <MenuItem Header="_Exit" Click="MenuItem_Click_1" />
             </MenuItem>
         </Menu>
-        <TreeView  x:Name="DirectoryTreeView" Margin="0,19,0,0" HorizontalAlignment="Left" Width="150">
+        <TreeView  x:Name="DirectoryTreeView" Margin="0,19,0,0" HorizontalAlignment="Left" Width="150" SelectedItemChanged="DirectoryTreeView_OnSelectedItemChanged">
         </TreeView>
+        <TextBlock x:Name="ContentBlock" Margin="150,19,0,0" TextWrapping="Wrap" Text="TextBlock" Grid.ColumnSpan="2"/>
     </Grid>
 </Window>

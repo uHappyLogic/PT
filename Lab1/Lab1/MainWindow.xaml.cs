@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
@@ -33,12 +34,23 @@ namespace Lab1
             }
         }
 
+        private void DirectoryTreeView_OnSelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            string path = (DirectoryTreeView.SelectedItem as TreeViewItem)?.Tag as string;
+            LoadToContentBlock(path);
+        }
+
+        private void MenuItem_Click_1(object sender, RoutedEventArgs e)
+        {
+            System.Windows.Application.Current.Shutdown();
+        }
+
         private void AddToTree(ItemCollection items, string path)
         {
             TreeViewItem currentDirectory = new TreeViewItem
             {
                 Header = Path.GetFileName(path),
-                Tag = path
+                Tag = path,
             };
 
             items.Add(currentDirectory);
@@ -55,6 +67,28 @@ namespace Lab1
                 foreach (var files in directoryInfo.GetFiles())
                 {
                     AddToTree(currentDirectory.Items, files.FullName);
+                }
+            }
+        }
+
+        private void LoadToContentBlock(string path)
+        {
+            if ((File.GetAttributes(path) & FileAttributes.Directory) != 0)
+            {
+                ContentBlock.Text = "Selected item is directory";
+            }
+            else
+            {
+                try
+                {
+                    using (var textReader = File.OpenText(path))
+                    {
+                        ContentBlock.Text = textReader.ReadToEnd();
+                    }
+                }
+                catch (Exception)
+                {
+                    ContentBlock.Text = "Selected item cannot be opened for read";
                 }
             }
         }
