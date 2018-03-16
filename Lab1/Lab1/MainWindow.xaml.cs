@@ -1,15 +1,14 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
+using ContextMenu = System.Windows.Controls.ContextMenu;
 using TreeView = System.Windows.Controls.TreeView;
 
 namespace Lab1
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         public MainWindow()
@@ -32,12 +31,22 @@ namespace Lab1
                 DirectoryTreeView.Items.Clear();
                 AddToTree(DirectoryTreeView.Items, dlg.SelectedPath);
             }
+
+            _contextMenu = DirectoryTreeView.ContextMenu;
         }
 
         private void DirectoryTreeView_OnSelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            string path = (DirectoryTreeView.SelectedItem as TreeViewItem)?.Tag as string;
-            LoadToContentBlock(path);
+            try
+            {
+                string path = (DirectoryTreeView.SelectedItem as TreeViewItem)?.Tag as string;
+                ChangeContextMenu(path);
+                LoadToContentBlock(path);
+            }
+            catch (Exception)
+            {
+                Debug.WriteLine("TreeViewItem not selected");
+            }
         }
 
         private void MenuItem_Click_1(object sender, RoutedEventArgs e)
@@ -92,5 +101,53 @@ namespace Lab1
                 }
             }
         }
+
+        private void ChangeContextMenu(string path)
+        {
+            try
+            {
+                if ((File.GetAttributes(path) & FileAttributes.Directory) != 0)
+                {
+                    DirectoryTreeView.ContextMenu = _contextMenu;
+                }
+                else
+                {
+                    DirectoryTreeView.ContextMenu = null;
+                }
+            }
+            catch (Exception)
+            {
+                DirectoryTreeView.ContextMenu = null;
+            }
+        }
+
+        private void AddFolder_Click(object sender, RoutedEventArgs e)
+        {
+            string path = (DirectoryTreeView.SelectedItem as TreeViewItem)?.Tag as string;
+
+            CreateDirectoryForm createDirectoryForm = new CreateDirectoryForm
+            {
+                Owner = this,
+                FilePath = path
+            };
+
+            createDirectoryForm.ShowDialog();
+        }
+
+        private void RemoveFolder_Click(object sender, RoutedEventArgs e)
+        {
+            string path = (DirectoryTreeView.SelectedItem as TreeViewItem)?.Tag as string;
+
+            try
+            {
+                Directory.Delete(path);
+            }
+            catch (Exception)
+            {
+                System.Windows.MessageBox.Show("Directory cannot be removed", "Information", MessageBoxButton.OK);
+            }
+        }
+
+        ContextMenu _contextMenu;
     }
 }
