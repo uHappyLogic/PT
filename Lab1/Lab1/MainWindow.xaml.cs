@@ -14,6 +14,7 @@ namespace Lab1
         public MainWindow()
         {
             InitializeComponent();
+            _contextMenu = DirectoryTreeView.ContextMenu;
         }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
@@ -31,8 +32,6 @@ namespace Lab1
                 DirectoryTreeView.Items.Clear();
                 AddToTree(DirectoryTreeView.Items, dlg.SelectedPath);
             }
-
-            _contextMenu = DirectoryTreeView.ContextMenu;
         }
 
         private void DirectoryTreeView_OnSelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
@@ -42,10 +41,39 @@ namespace Lab1
                 string path = (DirectoryTreeView.SelectedItem as TreeViewItem)?.Tag as string;
                 ChangeContextMenu(path);
                 LoadToContentBlock(path);
+                LoadFileAttributes(path);
             }
             catch (Exception)
             {
                 Debug.WriteLine("TreeViewItem not selected");
+            }
+        }
+
+        private void LoadFileAttributes(string path)
+        {
+            FileAttributes fa = File.GetAttributes(path);
+
+            if ((fa & FileAttributes.Directory) == 0)
+            {
+                string attr = "";
+
+                if ((fa & FileAttributes.ReadOnly) != 0)
+                    attr += "R";
+
+                if ((fa & FileAttributes.Archive) != 0)
+                    attr += "A";
+
+                if ((fa & FileAttributes.System) != 0)
+                    attr += "S";
+
+                if ((fa & FileAttributes.Hidden) != 0)
+                    attr += "H";
+
+                LabelAttributes.Content = attr;
+            }
+            else
+            {
+                LabelAttributes.Content = "Directory";
             }
         }
 
@@ -92,7 +120,12 @@ namespace Lab1
                 {
                     using (var textReader = File.OpenText(path))
                     {
-                        ContentBlock.Text = textReader.ReadToEnd();
+                        ContentBlock.Text = "";
+
+                        for (int i = 0; i < 300; ++i)
+                        {
+                            ContentBlock.Text += textReader.ReadLine() + "\n";
+                        }
                     }
                 }
                 catch (Exception)

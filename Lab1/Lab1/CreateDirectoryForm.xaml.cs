@@ -31,7 +31,7 @@ namespace Lab1
             if (radioButtonFile.IsChecked == true)
             {
                 radioButtonDirectory.IsChecked = false;
-                enableCheckButtons(false);
+                enableCheckButtons(true);
             }
         }
 
@@ -83,22 +83,23 @@ namespace Lab1
 
                     FileAttributes fa = 0x0;
                     
-                    if (checkBoxArchive.IsEnabled)
+                    if (checkBoxArchive.IsChecked == true)
                         fa |= FileAttributes.Archive;
 
-                    if (checkBoxHidden.IsEnabled)
+                    if (checkBoxHidden.IsChecked == true)
                         fa |= FileAttributes.Hidden;
 
-                    if (checkBoxReadonyl.IsEnabled)
+                    if (checkBoxReadonyl.IsChecked == true)
                         fa |= FileAttributes.ReadOnly;
                     
-                    if (checkBoxSystem.IsEnabled)
+                    if (checkBoxSystem.IsChecked == true)
                         fa |= FileAttributes.System;
 
                     File.SetAttributes(fullPath, fa);
                 }
 
                 MessageBox.Show($"{ element } with name { filename } successfully created with current name and attributes", "Information", MessageBoxButton.OK);
+                
                 Close();
             }
             catch (Exception)

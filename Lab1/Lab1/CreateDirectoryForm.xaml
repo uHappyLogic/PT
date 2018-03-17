@@ -15,7 +15,7 @@
         <CheckBox x:Name="checkBoxArchive" Content="Archive" HorizontalAlignment="Left" Margin="76,146,0,0" VerticalAlignment="Top"/>
         <CheckBox x:Name="checkBoxHidden" Content="Hidden" HorizontalAlignment="Left" Margin="76,166,0,0" VerticalAlignment="Top"/>
         <CheckBox x:Name="checkBoxSystem" Content="System" HorizontalAlignment="Left" Margin="76,186,0,0" VerticalAlignment="Top"/>
-        <Button x:Name="buttonOk" Content="OK" HorizontalAlignment="Left" Margin="66,228,0,0" VerticalAlignment="Top" Width="75" Click="buttonOk_Click"/>
+        <Button x:Name="buttonOk" Content="OK" IsCancel="True" HorizontalAlignment="Left" Margin="66,228,0,0" VerticalAlignment="Top" Width="75" Click="buttonOk_Click"/>
         <Button x:Name="buttonCancel" Content="Cancel" HorizontalAlignment="Left" Margin="146,228,0,0" VerticalAlignment="Top" Width="75" Click="buttonCancel_Click"/>
 
     </Grid>
