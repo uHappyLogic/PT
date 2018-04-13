@@ -10,7 +10,7 @@
 </h:head>
 <h:body>
     <h:form>
-        <h:dataTable value="#{ContactsManager.contactList}" var="c"
+        <h:dataTable value="#{contactsManager.contactList}" var="c"
             styleClass="order-table"
             headerClass="order-table-header"
             rowClasses="order-table-odd-row,order-table-even-row"
@@ -23,7 +23,11 @@
             </h:column>
     			
             <h:column>
-                <f:facet name="header">Surname</f:facet>
+                <f:facet name="header">
+                    <h:commandLink action="#{contactsManager.sortBySurname}">
+                    Surname
+                    </h:commandLink>
+                </f:facet>
                 <h:inputText value="#{c.surname}" size="10" rendered="#{c.editable}" />		
     		<h:outputText value="#{c.surname}" rendered="#{not c.editable}" />
             </h:column>
@@ -47,16 +51,16 @@
             
             <h:column>
                 <f:facet name="header">Delete</f:facet>	
-                <h:commandLink value="Delete"  action="#{ContactsManager.deleteAction(c)}" />	
+                <h:commandLink value="Delete"  action="#{contactsManager.deleteAction(c)}" />	
             </h:column>
             
             <h:column>
                 <f:facet name="header">Edit</f:facet>	
-                <h:commandLink value="Edit" action="#{ContactsManager.editAction(c)}" rendered="#{not c.editable}"/>			
+                <h:commandLink value="Edit" action="#{contactsManager.editAction(c)}" rendered="#{not c.editable}"/>			
             </h:column>
             
         </h:dataTable>
-        <h:commandButton value="Save" action="#{ContactsManager.saveAction}" />
+        <h:commandButton value="Save" action="#{contactsManager.saveAction}" />
         <h:commandButton value="Back" action="index" immediate="true"/>
     </h:form>
 </h:body>

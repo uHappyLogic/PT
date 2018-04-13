@@ -10,7 +10,7 @@
 </h:head>
 <h:body>
     <h:form>
-        <h:dataTable value="#{ContactsManager.contactList}" var="c"
+        <h:dataTable value="#{contactsManager.contactList}" var="c"
                 styleClass="order-table"
                 headerClass="order-table-header"
                 rowClasses="order-table-odd-row,order-table-even-row"
@@ -25,7 +25,7 @@
             </h:column>
             <h:column>
                     <f:facet name="header">
-                        <h:commandLink action="#{ContactsManager.sortBySurname}">
+                        <h:commandLink action="#{contactsManager.sortBySurname}">
                         Surname
                         </h:commandLink>
                     </f:facet>
@@ -51,18 +51,18 @@
         <table>
             <tr>
                 <td>Name</td>
-                <td><h:inputText size="10" value="#{ContactsManager.name}" required="true" 
+                <td><h:inputText size="10" value="#{contact.name}" required="true" 
                                  requiredMessage="Name is required"/></td>
             </tr>
             <tr>
                 <td>Surname</td>
-                <td><h:inputText size="20" value="#{ContactsManager.surname}" required="true" 
+                <td><h:inputText size="20" value="#{contact.surname}" required="true" 
                                  requiredMessage="Surname  is required"/></td>
             </tr>
             <tr>
                 <td>City</td>
                 <td>
-                <h:selectOneMenu value="#{ContactsManager.city}">
+                <h:selectOneMenu value="#{contact.city}">
                     <f:selectItem itemValue="Bromberg" itemLabel="Bromberg"/> 
                     <f:selectItem itemValue="Danzig" itemLabel="Danzig"/>
                     <f:selectItem itemValue="Posen" itemLabel="Posen"/>
@@ -71,7 +71,8 @@
             </tr>
             <tr>
                 <td>Phone number</td>
-                <td><h:inputText size="10" value="#{ContactsManager.telephone}" validatorMessage="Podaj od 7 do 15 znakow">
+                <td><h:inputText size="10" value="#{contact.telephone}" 
+                                 validatorMessage="Phone number should have between 7 and 15 chars">
                 <f:validateLength maximum="15" minimum="7" />
                     </h:inputText>
                 </td>
@@ -79,16 +80,17 @@
             <tr>
                 <td>Group</td>
                 <td>
-                <h:selectOneRadio layout="lineDirection" value="#{ContactsManager.group}"> 
-                <f:selectItem itemValue="Family" itemLabel="Family"/>
-                <f:selectItem itemValue="Friends" itemLabel="Friends"/>
-                <f:selectItem itemValue="Others" itemLabel="Others"/> 
+                <h:selectOneRadio layout="lineDirection" value="#{contact.group}" required="true"
+                                  requiredMessage="One of groups should be chosen"> 
+                    <f:selectItem itemValue="Family" itemLabel="Family"/>
+                    <f:selectItem itemValue="Friends" itemLabel="Friends"/>
+                    <f:selectItem itemValue="Others" itemLabel="Others"/> 
                 </h:selectOneRadio>
                 </td>
             </tr>
         </table>
 
-        <h:commandButton value="Add" action="#{ContactsManager.addAction}" />
+        <h:commandButton value="Add" action="#{contact.addAction}" />
         <h:commandButton value="Back" action="index" immediate="true"/>	
     </h:form>
 </h:body>
