@@ -1,0 +1,95 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+  <title>Lab3 - Contacts List - Add Contact</title>
+  <h:outputStylesheet library="css" name="table-style.css"  />
+</h:head>
+<h:body>
+    <h:form>
+        <h:dataTable value="#{ContactsManager.contactList}" var="c"
+                styleClass="order-table"
+                headerClass="order-table-header"
+                rowClasses="order-table-odd-row,order-table-even-row"
+        >
+            <h:column>
+                    <!-- column header -->
+                    <f:facet name="header">
+                        Name
+                    </f:facet>
+                    <!-- row record -->
+                    #{c.name}
+            </h:column>
+            <h:column>
+                    <f:facet name="header">
+                        <h:commandLink action="#{ContactsManager.sortBySurname}">
+                        Surname
+                        </h:commandLink>
+                    </f:facet>
+                    #{c.surname}
+            </h:column>
+            <h:column>
+                    <f:facet name="header">City</f:facet>
+                    #{c.city}
+            </h:column>
+            <h:column>
+                    <f:facet name="header">Phone number</f:facet>
+                    #{c.telephone}
+            </h:column>
+            <h:column>
+                    <f:facet name="header">Group</f:facet>
+                    #{c.group}
+            </h:column>
+
+        </h:dataTable>
+    </h:form>
+    <h:form>
+        <h2>Add contact</h2>
+        <table>
+            <tr>
+                <td>Name</td>
+                <td><h:inputText size="10" value="#{ContactsManager.name}" required="true" 
+                                 requiredMessage="Name is required"/></td>
+            </tr>
+            <tr>
+                <td>Surname</td>
+                <td><h:inputText size="20" value="#{ContactsManager.surname}" required="true" 
+                                 requiredMessage="Surname  is required"/></td>
+            </tr>
+            <tr>
+                <td>City</td>
+                <td>
+                <h:selectOneMenu value="#{ContactsManager.city}">
+                    <f:selectItem itemValue="Bromberg" itemLabel="Bromberg"/> 
+                    <f:selectItem itemValue="Danzig" itemLabel="Danzig"/>
+                    <f:selectItem itemValue="Posen" itemLabel="Posen"/>
+                </h:selectOneMenu>
+                </td>
+            </tr>
+            <tr>
+                <td>Phone number</td>
+                <td><h:inputText size="10" value="#{ContactsManager.telephone}" validatorMessage="Podaj od 7 do 15 znakow">
+                <f:validateLength maximum="15" minimum="7" />
+                    </h:inputText>
+                </td>
+            </tr>
+            <tr>
+                <td>Group</td>
+                <td>
+                <h:selectOneRadio layout="lineDirection" value="#{ContactsManager.group}"> 
+                <f:selectItem itemValue="Family" itemLabel="Family"/>
+                <f:selectItem itemValue="Friends" itemLabel="Friends"/>
+                <f:selectItem itemValue="Others" itemLabel="Others"/> 
+                </h:selectOneRadio>
+                </td>
+            </tr>
+        </table>
+
+        <h:commandButton value="Add" action="#{ContactsManager.addAction}" />
+        <h:commandButton value="Back" action="index" immediate="true"/>	
+    </h:form>
+</h:body>
+</html>
