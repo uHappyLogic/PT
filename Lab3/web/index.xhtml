@@ -3,50 +3,58 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:ui="http://java.sun.com/jsf/facelets">
-<h:head>
-  <title>Lab3 - Contacts List</title>
-  <h:outputStylesheet library="css" name="table-style.css"  />
-</h:head>
-<h:body>
-    <h:form>
-        <h:dataTable value="#{contactsManager.contactList}" var="c"
-                styleClass="order-table"
-                headerClass="order-table-header"
-                rowClasses="order-table-odd-row,order-table-even-row"
-        >
-            <h:column>
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+    >
+    <h:head>
+        <title>Lab3 - Contacts List</title>
+        <h:outputStylesheet library="css" name="table-style.css"  />
+    </h:head>
+    <h:body>
+        <h:form>
+            <p:dataTable value="#{contactsManager.contactList}" var="c"
+                         styleClass="order-table"
+                         widgetVar="cTable"       
+                         >
+                <p:column>
                     <!-- column header -->
                     <f:facet name="header">
                         Name
                     </f:facet>
                     <!-- row record -->
                     #{c.name}
-            </h:column>
-            <h:column>
+                </p:column>
+                <p:column>
                     <f:facet name="header">
                         <h:commandLink action="#{contactsManager.sortBySurname}">
-                        Surname
+                            Surname
                         </h:commandLink>
                     </f:facet>
                     #{c.surname}
-            </h:column>
-            <h:column>
+                </p:column>
+                <p:column>
                     <f:facet name="header">City</f:facet>
-                    #{c.city}
-            </h:column>
-            <h:column>
+                        #{c.city}
+                </p:column>
+                <p:column>
                     <f:facet name="header">Phone number</f:facet>
-                    #{c.telephone}
-            </h:column>
-            <h:column>
-                    <f:facet name="header">Group</f:facet>
-                    #{c.group}
-            </h:column>
-
-        </h:dataTable>
-        <h:commandButton id="addButton" value="Add contact" action="AddContact" />
-        <h:commandButton id="editButton" value="Enable edition" action="EditContact" />
-    </h:form>
-  </h:body>
+                        #{c.telephone}
+                </p:column>                
+                <p:column filterBy="#{c.group}" headerText="Group" filterMatchMode="exact">
+                    <f:facet name="filter">
+                        <p:selectOneMenu onchange="PF('cTable').filter()" >
+                            <f:selectItem itemLabel="Select One" itemValue="#{null}" noSelectionOption="true" />
+                            <f:selectItems value="#{contact.availableGroups}" />
+                        </p:selectOneMenu>
+                    </f:facet>
+                    <h:outputText value="#{c.group}" />
+                </p:column>
+            </p:dataTable>
+            
+            <h:commandButton id="addButton" value="Add contact" action="AddContact" />
+            <h:commandButton id="editButton" value="Enable edition" action="EditContact" />
+        </h:form>
+        <br />
+        <h:link outcome="welcomePrimefaces" value="Primefaces welcome page" />
+    </h:body>
 </html>

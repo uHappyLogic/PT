@@ -1,6 +1,9 @@
 package busy.minds.com;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
@@ -25,7 +28,11 @@ public class Contact implements Serializable {
      
     public Contact() {
         
-    } 
+    }
+    
+    public String[] getAvailableGroups(){
+        return new String[] {"Family", "Friends", "Others"};
+    }
      
     public Contact(String name, String surname, String city, String telephone, String group){
         this.name = name;
@@ -40,7 +47,6 @@ public class Contact implements Serializable {
     }
          
     public String addAction(){
-        System.err.println("Conta is null" + contactsManager == null ? "yes" : "no");
         contactsManager.getContactList().add(this);
         return null;        
     }
