@@ -6,17 +6,22 @@
 package busy.minds.com;
 
 import java.io.Serializable;
+import java.util.Collection;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -41,6 +46,8 @@ public class Credentials implements Serializable {
     @Lob
     @Column(name = "DESCRIPTION")
     private String description;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "credentialId", fetch = FetchType.EAGER)
+    private Collection<Userscred> userscredCollection;
 
     public Credentials() {
     }
@@ -48,7 +55,13 @@ public class Credentials implements Serializable {
     public Credentials(Short id) {
         this.id = id;
     }
+    
+    public Credentials(String name, String description) {
 
+        this.name = name;
+        this.description = description;
+    }
+    
     public Short getId() {
         return id;
     }
@@ -71,6 +84,15 @@ public class Credentials implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @XmlTransient
+    public Collection<Userscred> getUserscredCollection() {
+        return userscredCollection;
+    }
+
+    public void setUserscredCollection(Collection<Userscred> userscredCollection) {
+        this.userscredCollection = userscredCollection;
     }
 
     @Override

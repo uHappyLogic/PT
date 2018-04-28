@@ -49,13 +49,17 @@ public class Users implements Serializable {
     @Column(name = "EMAIL")
     private String email;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId", fetch = FetchType.EAGER)
-    private Collection<UsersCreds> usersCredsCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "credentialId", fetch = FetchType.EAGER)
-    private Collection<UsersCreds> usersCredsCollection1;
+    private Collection<Userscred> userscredCollection;
 
     public Users() {
     }
 
+    public Users(String username, String password, String email) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+    }
+    
     public Users(Short id) {
         this.id = id;
     }
@@ -93,21 +97,12 @@ public class Users implements Serializable {
     }
 
     @XmlTransient
-    public Collection<UsersCreds> getUsersCredsCollection() {
-        return usersCredsCollection;
+    public Collection<Userscred> getUserscredCollection() {
+        return userscredCollection;
     }
 
-    public void setUsersCredsCollection(Collection<UsersCreds> usersCredsCollection) {
-        this.usersCredsCollection = usersCredsCollection;
-    }
-
-    @XmlTransient
-    public Collection<UsersCreds> getUsersCredsCollection1() {
-        return usersCredsCollection1;
-    }
-
-    public void setUsersCredsCollection1(Collection<UsersCreds> usersCredsCollection1) {
-        this.usersCredsCollection1 = usersCredsCollection1;
+    public void setUserscredCollection(Collection<Userscred> userscredCollection) {
+        this.userscredCollection = userscredCollection;
     }
 
     @Override

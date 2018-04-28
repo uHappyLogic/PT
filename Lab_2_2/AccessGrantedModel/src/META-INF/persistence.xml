@@ -5,6 +5,7 @@
     <class>busy.minds.com.Credentials</class>
     <class>busy.minds.com.UsersCreds</class>
     <class>busy.minds.com.Users</class>
+    <class>busy.minds.com.Userscred</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/ag?zeroDateTimeBehavior=convertToNull"/>
       <property name="javax.persistence.jdbc.user" value="root"/>

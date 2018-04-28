@@ -1,12 +1,145 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <h:head>
-        <title>Facelet Title</title>
+        <title></title>
     </h:head>
     <h:body>
-        Hello from Facelets
+        <h:form id="form">
+            <p:growl id="msgs" showDetail="false"/>
+
+            <p:dataTable id="usersDataTable" var="user" value="#{users.users}" editable="true" style="margin-bottom:20px">
+                <p:ajax event="rowEdit" listener="#{users.onRowEdit}" update=":form:msgs" />
+
+                <p:column headerText="Username">
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{user.username}" /></f:facet>
+                        <f:facet name="input"><p:inputText id="modelInput" value="#{user.username}" style="width:100%"/></f:facet>
+                    </p:cellEditor>
+                </p:column>
+                <p:column headerText="Passowrd">
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{user.password}" /></f:facet>
+                        <f:facet name="input"><p:inputText value="#{user.password}" style="width:100%" label="Year"/></f:facet>
+                    </p:cellEditor>
+                </p:column>
+                <p:column headerText="E-mail">
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{user.email}" /></f:facet>
+                        <f:facet name="input"><p:inputText value="#{user.email}" style="width:100%" label="Year"/></f:facet>
+                    </p:cellEditor>
+                </p:column>
+                <p:column style="width:196px;">
+                    <p:commandButton 
+                        value="Show Credentials" 
+                        oncomplete="PF('dlg2').show();" 
+                        action="#{users.editCredential(user.id)}"
+                        update="dialog"/>
+                </p:column>
+                <p:column style="width:108px;">
+                    <p:commandButton value="Remove" action="#{users.removeUser(user)}" update="form">
+                    </p:commandButton>
+                </p:column>
+                <p:column style="width:32px">
+                    <p:rowEditor />
+                </p:column>
+            </p:dataTable>
+            <table id="newForm">
+                <tr>
+                    <td>Username</td>
+                    <td><h:inputText size = "20" value="#{users.username}" /></td>
+                </tr>
+                <tr>
+                    <td>Password:</td>
+                    <td><h:inputText size = "20" value="#{users.password}" /></td>
+                </tr>
+
+                <tr>
+                    <td>E-Mail</td>
+                    <td><h:inputText size = "20" value="#{users.email}" /></td>
+                </tr>
+
+                <tr>
+                    <td> </td>
+                    <td><p:commandButton value = "Add User" action="#{users.addUser}" update="usersDataTable" /></td>
+                </tr>
+            </table>
+            <p:dataTable id="credentialDataTable" var="credential" value="#{users.credentials}" editable="true" style="margin-bottom:20px">
+                <p:ajax event="rowEdit" listener="#{users.onCredRowEdit}" update=":form:msgs" />
+
+                <p:column headerText="Username">
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{credential.name}" /></f:facet>
+                        <f:facet name="input"><p:inputText id="modelInput" value="#{credential.name}" style="width:100%"/></f:facet>
+                    </p:cellEditor>
+                </p:column>
+                <p:column headerText="Passowrd">
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{credential.description}" /></f:facet>
+                        <f:facet name="input"><p:inputText value="#{credential.description}" style="width:100%" label="Year"/></f:facet>
+                    </p:cellEditor>
+                </p:column>
+                <p:column style="width:108px;">
+                    <p:commandButton value="Remove" action="#{users.removeCredential(credential)}" update="form">
+                    </p:commandButton>
+                </p:column>
+                <p:column style="width:32px">
+                    <p:rowEditor />
+                </p:column>
+            </p:dataTable>
+
+            <table id="newCredentialForm">
+                <tr>
+                    <td>Credential Name</td>
+                    <td><h:inputText size = "20" value="#{users.credentialName}" /></td>
+                </tr>
+                <tr>
+                    <td>Credential Description</td>
+                    <td><h:inputTextarea value="#{users.credentialDescription}" cols="40" rows="10"/></td>
+                </tr>
+                <tr>
+                    <td> </td>
+                    <td><p:commandButton value = "Add Credential" action="#{users.addCredential}" update="credentialDataTable" /></td>
+                </tr>
+            </table>
+
+        </h:form>
+
+        <p:dialog id="dialog" header="Credentials" widgetVar="dlg2" modal="true" height="400" width="600">
+            <h:form>
+                <c:forEach var="credential" items="#{users.credentialsVM}">
+                    <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
+                        <p:selectBooleanCheckbox value="#{credential.isSelected}">
+                        </p:selectBooleanCheckbox>
+                        <h:outputText value="#{credential.name}" />
+                    </h:panelGrid>
+                </c:forEach>
+
+                <p:commandButton
+                    value="Save"
+                    action="#{users.saveUsersCredentials}"
+                    oncomplete="PF('dlg2').hide();"
+                    update="form"
+                    />
+                <p:commandButton
+                    value="Ban"
+                    action="#{users.removeAllCredentials}"
+                    oncomplete="PF('dlg2').hide();"
+                    update="form"
+                    />
+                <p:commandButton
+                    value="Give Admin"
+                    action="#{users.addAdminCredentials()}"
+                    oncomplete="PF('dlg2').hide();"
+                    update="form"
+                    />
+
+            </h:form>
+        </p:dialog>  
     </h:body>
 </html>
 

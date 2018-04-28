@@ -17,7 +17,7 @@ public class UsersController {
 
     private EntityManager getEntityManager() {
         if (emf == null) {
-            emf = Persistence.createEntityManagerFactory("ModelPU");
+            emf = Persistence.createEntityManagerFactory("AccessGrantedModelPU");
         }
         return emf.createEntityManager();
     }
@@ -120,7 +120,7 @@ public class UsersController {
         }
     }
 
-    public void addCredentialToUser(UsersCreds usercred) {
+    public void addCredentialToUser(Userscred usercred) {
         EntityManager em = getEntityManager();
         try {
             em.getTransaction().begin();
@@ -131,11 +131,11 @@ public class UsersController {
         }
     }
 
-    public void removeCredentialFromUser(UsersCreds usercred) {
+    public void removeCredentialFromUser(Userscred usercred) {
         EntityManager em = getEntityManager();
         try {
             em.getTransaction().begin();
-            UsersCreds credentialToDelete = em.find(UsersCreds.class, usercred.getId());
+            Userscred credentialToDelete = em.find(Userscred.class, usercred.getId());
             em.remove(credentialToDelete);
             em.getTransaction().commit();
         } finally {
@@ -143,12 +143,12 @@ public class UsersController {
         }
     }
 
-    public List<UsersCreds> getCredentialsForUser(short userId) {
+    public List<Userscred> getCredentialsForUser(short userId) {
 
         EntityManager em = getEntityManager();
         try {
-            javax.persistence.Query q = em.createNamedQuery("Usercred.findByUserId", UsersCreds.class).setParameter("id", userId);
-            List<UsersCreds> result;
+            javax.persistence.Query q = em.createNamedQuery("Usercred.findByUserId", Userscred.class).setParameter("id", userId);
+            List<Userscred> result;
             result = q.getResultList();
             return result;
         } finally {
@@ -160,7 +160,7 @@ public class UsersController {
         EntityManager em = getEntityManager();
         try {
             em.getTransaction().begin();
-            javax.persistence.Query q = em.createNamedQuery("Usercred.deleteByUserId", UsersCreds.class).setParameter("id", id);
+            javax.persistence.Query q = em.createNamedQuery("Usercred.deleteByUserId", Userscred.class).setParameter("id", id);
             q.executeUpdate();
             em.getTransaction().commit();
         } finally {
@@ -168,11 +168,11 @@ public class UsersController {
         }
     }
 
-    public void addMissingCredentials(List<UsersCreds> credentials) {
+    public void addMissingCredentials(List<Userscred> credentials) {
         EntityManager em = getEntityManager();
         try {
             em.getTransaction().begin();
-            for (UsersCreds c : credentials) {
+            for (Userscred c : credentials) {
                 em.persist(c);
             }
             em.getTransaction().commit();

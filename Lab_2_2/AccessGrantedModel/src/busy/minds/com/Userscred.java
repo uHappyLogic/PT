@@ -25,12 +25,12 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author local_user
  */
 @Entity
-@Table(name = "users_creds")
+@Table(name = "userscred")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "UsersCreds.findAll", query = "SELECT u FROM UsersCreds u"),
-    @NamedQuery(name = "UsersCreds.findById", query = "SELECT u FROM UsersCreds u WHERE u.id = :id")})
-public class UsersCreds implements Serializable {
+    @NamedQuery(name = "Userscred.findAll", query = "SELECT u FROM Userscred u"),
+    @NamedQuery(name = "Userscred.findById", query = "SELECT u FROM Userscred u WHERE u.id = :id")})
+public class Userscred implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,13 +42,18 @@ public class UsersCreds implements Serializable {
     private Users userId;
     @JoinColumn(name = "CREDENTIAL_ID", referencedColumnName = "ID")
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
-    private Users credentialId;
+    private Credentials credentialId;
 
-    public UsersCreds() {
+    public Userscred() {
     }
 
-    public UsersCreds(Short id) {
+    public Userscred(Short id) {
         this.id = id;
+    }
+    
+    public Userscred(Users userId, Credentials credentialId) {
+        this.userId = userId;
+        this.credentialId = credentialId;
     }
 
     public Short getId() {
@@ -67,11 +72,11 @@ public class UsersCreds implements Serializable {
         this.userId = userId;
     }
 
-    public Users getCredentialId() {
+    public Credentials getCredentialId() {
         return credentialId;
     }
 
-    public void setCredentialId(Users credentialId) {
+    public void setCredentialId(Credentials credentialId) {
         this.credentialId = credentialId;
     }
 
@@ -85,10 +90,10 @@ public class UsersCreds implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof UsersCreds)) {
+        if (!(object instanceof Userscred)) {
             return false;
         }
-        UsersCreds other = (UsersCreds) object;
+        Userscred other = (Userscred) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -97,7 +102,7 @@ public class UsersCreds implements Serializable {
 
     @Override
     public String toString() {
-        return "busy.minds.com.UsersCreds[ id=" + id + " ]";
+        return "busy.minds.com.Userscred[ id=" + id + " ]";
     }
     
 }
