@@ -126,15 +126,15 @@
                     update="form"
                     />
                 <p:commandButton
-                    value="Ban"
+                    value="Revoke All"
                     action="#{users.removeAllCredentials}"
-                    oncomplete="PF('dlg2').hide();"
+                    oncomplete="PF('dlg2').hide();alert('All credentials have beed revoked');"
                     update="form"
                     />
                 <p:commandButton
-                    value="Give Admin"
+                    value="Grant All"
                     action="#{users.addAdminCredentials()}"
-                    oncomplete="PF('dlg2').hide();"
+                    oncomplete="PF('dlg2').hide();alert('All credentials have beed granted');"
                     update="form"
                     />
 
