@@ -28,7 +28,10 @@ CREATE TABLE credentials (
 
 INSERT INTO credentials VALUES
 ( null, 'Floor 1', 'Grants access to the first floor'),
-( null, 'Floor 1', 'Grants access to the first floor');
+( null, 'Floor 2', 'Grants access to the second floor'),
+( null, 'Floor 3', 'Grants access to the third floor'),
+( null, 'Floor 4', 'Grants access to the fourth floor'),
+( null, 'Floor 5', 'Grants access to the fifth floor');
 
 CREATE TABLE userscred (
 ID SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
